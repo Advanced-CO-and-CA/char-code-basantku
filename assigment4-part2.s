@@ -15,9 +15,11 @@ SUBSTR: .asciz "620"
 
 .align
 /*output*/
-lps: .word 0
 len_substr: .word 0
 position: .word 0
+
+/*placed lps to last to avoid overwrite*/
+lps: .word 0
 
 @ TEXT section
     .text
@@ -109,10 +111,13 @@ kmp_next:
   ldrb r1, [r7, r2]        /*STRING[i]*/
   cmp r1, #0
   bne kmp_compare
+  mov r0, #0               /* zero mean no pattern match*/
+  b kmp_postion_update
 
 kmp_found:
-  sub r0, r2, r3           /* substr at position i - j*/
-  add r0, r0, #1           /* substr at position i - j*/
+  sub r0, r2, r3           /* substr position i - j + 1*/
+  add r0, r0, #1
+kmp_postion_update:
   str r0, [r8]
 
 .end
