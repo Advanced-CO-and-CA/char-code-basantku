@@ -17,6 +17,7 @@ SUBSTR: .asciz "620"
 /*output*/
 len_substr: .word 0
 position: .word 0
+/*placed lps to last to avoid overwrite*/
 lps: .word 0
 
 @ TEXT section
