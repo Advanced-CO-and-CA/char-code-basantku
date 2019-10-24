@@ -14,6 +14,7 @@ STRING: .asciz "CS6620"
 SUBSTR: .asciz "620"
 
 .align
+/*output*/
 lps: .word 0
 len_substr: .word 0
 position: .word 0
@@ -34,6 +35,8 @@ lps_func:
   mov r2, #1                /*i = 1;*/
   mov r4, r5                /*put SUBSTR for different offset*/
   ldrb r0, [r4, r2]         /*SUBSTR[i]*/
+  cmp r0, #0                /*compare str with zero */
+  beq store_len
 
 lps_compare:
   ldrb r1, [r5, r3]         /*SUBSTR[len]*/
@@ -58,8 +61,9 @@ lps_len_update:
 lps_next:
   add r2, r2, #1            /*i++ which keep track of SUBSTR length, */
   ldrb r0, [r4, r2]         /*SUBSTR[i]*/
-  cmp r0, #0                /*compare strlen with zero */
+  cmp r0, #0                /*compare str with zero */
   bne lps_compare           /*if not equal jump to level:lps_compare for next character comparision*/
+store_len:
   ldr r1, =len_substr
   str r2, [r1]
 
